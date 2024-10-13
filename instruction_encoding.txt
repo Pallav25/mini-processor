@@ -1,0 +1,75 @@
+# Instruction Encoding Scheme (Revised)
+
+## Assumptions
+1. We'll use a fixed 32-bit instruction format for simplicity.
+2. We'll divide instructions into different types based on their operands and functionality.
+3. We'll allocate 6 bits for the opcode, which allows for up to 64 unique instructions.
+4. Shift amount is either 0 or 1, requiring only 1 bit.
+
+## Instruction Types
+1. R-type: Register-to-register operations
+2. I-type: Immediate and memory operations
+3. J-type: Jump instructions
+
+## Encoding Format
+
+### R-type (Register-to-register)
+| Opcode (6 bits) | Rs (4 bits) | Rt (4 bits) | Rd (4 bits) | Shamt (1 bit) | Funct (13 bits) |
+|-----------------|-------------|-------------|-------------|---------------|-----------------|
+
+- Opcode: Specifies the operation
+- Rs: Source register 1
+- Rt: Source register 2
+- Rd: Destination register
+- Shamt: Shift amount (0 or 1)
+- Funct: Additional function specifier
+
+### I-type (Immediate and memory operations)
+| Opcode (6 bits) | Rs (4 bits) | Rt (4 bits) | Immediate (18 bits) |
+|-----------------|-------------|-------------|---------------------|
+
+- Opcode: Specifies the operation
+- Rs: Source/base register
+- Rt: Target register (destination for load, source for store)
+- Immediate: 18-bit immediate value or address offset
+
+### J-type (Jump instructions)
+| Opcode (6 bits) | Address (26 bits) |
+|-----------------|-------------------|
+
+- Opcode: Specifies the jump operation
+- Address: 26-bit jump target address
+
+## Opcode Allocation
+- 000000: R-type instructions (use Funct field)
+- 000001-001111: I-type arithmetic/logic instructions
+    -000001: ADDI
+    
+
+- 010000-011111: Load/Store instructions
+- 100000-101111: Branch instructions
+- 110000-111110: J-type instructions
+- 111111: Special instructions (HALT, NOP)
+
+## Function Field (for R-type instructions)
+- 0000000000000: ADD
+- 0000000000001: SUB
+- 0000000000010: AND
+- 0000000000011: OR
+- 0000000000100: XOR
+- 0000000000101: NOR
+- 0000000000110: NOT
+- 0000000000111: SL
+- 0000000001000: SRL
+- 0000000001001: SRA
+- 0000000001010: INC
+- 0000000001011: DEC
+- 0000000001100: SLT
+- 0000000001101: SGT
+- 0000000001110: HAM
+- 0000000001111: CMOV
+- 0000000010000: MOVE
+
+
+
+
