@@ -23,10 +23,13 @@ module control_path (
     input wire clk,
     input wire rst,
     input wire perform,
-    input wire [2:0] control, // 3-bit control input
-    output reg [2:0] read_reg1,
-    output reg [2:0] read_reg2,
-    output reg [2:0] write_reg,
+    input wire [3:0] Rx,
+    input wire [3:0] Ry,
+    input wire [3:0] Rz,
+    input wire [3:0] op,
+    output reg [3:0] read_reg1,
+    output reg [3:0] read_reg2,
+    output reg [3:0] write_reg,
     output reg [3:0] alu_op,
     output reg write_enable,
     output reg ldA,
@@ -85,190 +88,34 @@ end
 always @(state_reg) begin
     case(state_reg)
         2'b00: begin
-            read_reg1 = 3'b000;
-            read_reg2 = 3'b000;
+            read_reg1 = 4'b0000;
+            read_reg2 = 4'b0000;
             ldA = 1'b0;
             ldB = 1'b0;
             ldZ = 1'b0;
             write_enable = 1'b0;
         end
         2'b01: begin
-            case(control)
-                3'b000: begin
-                    read_reg1 <= 3'b010;
-                    read_reg2 <= 3'b011;
-                    #1 ldA <= 1'b1;
-                    #1 ldB <= 1'b1;
-                end
-
-                3'b001: begin
-                    read_reg1 <= 3'b001;
-                    read_reg2 <= 3'b101;
-                    #1 ldA <= 1'b1;
-                    #1 ldB <= 1'b1;
-                    write_enable <= 1'b0;
-                end
-
-                3'b010: begin
-                    read_reg1 <= 3'b001;
-                    read_reg2 <= 3'b010;
-                    #1 ldA <= 1'b1;
-                    #1 ldB <= 1'b1;
-                end
-
-                3'b011: begin
-                    read_reg1 <= 3'b001;
-                    read_reg2 <= 3'b010;
-                    #1 ldA <= 1'b1;
-                    #1 ldB <= 1'b1;
-                end
-
-                3'b100: begin
-                    read_reg1 <= 3'b001;
-                    read_reg2 <= 3'b010;
-                    #1 ldA <= 1'b1;
-                    #1 ldB <= 1'b1;
-                end
-
-                3'b101: begin
-                    read_reg1 <= 3'b001;
-                    read_reg2 <= 3'b010;
-                    #1 ldA <= 1'b1;
-                    #1 ldB <= 1'b1;
-                end
-
-                3'b110: begin
-                    read_reg1 <= 3'b010;
-                    read_reg2 <= 3'b000;
-                    #1 ldA <= 1'b1;
-                    #1 ldB <= 1'b1;
-                end
-
-                3'b111: begin
-                    read_reg1 <= 3'b000;
-                    read_reg2 <= 3'b000;
-                    #1 ldA <= 1'b1;
-                    #1 ldB <= 1'b1;
-                end
-
-            endcase
+            read_reg1 <= Rx;
+            read_reg2 <= Ry;
+            #1 ldA <= 1'b1;
+            #1 ldB <= 1'b1;
         end
         2'b10: begin
-            case(control)
-                3'b000: begin
-                    alu_op <= 4'd0;
-                    #1 ldZ <= 1'b1;
-                    #1 ldA <= 1'b0;
-                    #1 ldB <= 1'b0;
-                end
-
-                3'b001: begin
-                    alu_op <= 4'd1;
-                    #1 ldZ <= 1'b1;
-                    #1 ldA <= 1'b0;
-                    #1 ldB <= 1'b0;
-                end
-
-                3'b010: begin
-                    alu_op <= 4'd10;
-                    #1 ldZ <= 1'b1;
-                    #1 ldA <= 1'b0;
-                    #1 ldB <= 1'b0;
-                end
-
-                3'b011: begin
-                    alu_op <= 4'd11;
-                    #1 ldZ <= 1'b1;
-                    #1 ldA <= 1'b0;
-                    #1 ldB <= 1'b0;
-                end
-
-                3'b100: begin
-                    alu_op <= 4'd2;
-                    #1 ldZ <= 1'b1;
-                    #1 ldA <= 1'b0;
-                    #1 ldB <= 1'b0;
-                end
-
-                3'b101: begin
-                    alu_op <= 4'd4;
-                    #1 ldZ <= 1'b1;
-                    #1 ldA <= 1'b0;
-                    #1 ldB <= 1'b0;
-                end
-
-                3'b110: begin
-                    alu_op <= 4'd8;
-                    #1 ldZ <= 1'b1;
-                    #1 ldA <= 1'b0;
-                    #1 ldB <= 1'b0;
-                end
-
-                3'b111: begin
-                    alu_op <= 4'd8;
-                    #1 ldZ <= 1'b1;
-                    #1 ldA <= 1'b0;
-                    #1 ldB <= 1'b0;
-                end
-
-            endcase
+            alu_op <= op;
+            #1 ldZ <= 1'b1;
+            #1 ldA <= 1'b0;
+            #1 ldB <= 1'b0;
         end
         2'b11: begin
-            case(control)
-                3'b000: begin
-                    write_reg <= 3'b001;
-                    #1 write_enable <= 1'b1;
-                    #1 ldZ <= 1'b0;
-                end
-
-                3'b001: begin
-                    write_reg <= 3'b100;
-                    #1 write_enable <= 1'b1;
-                    #1 ldZ <= 1'b0;
-                end
-
-                3'b010: begin
-                    write_reg <= 3'b010;
-                    #1 write_enable <= 1'b1;
-                    #1 ldZ <= 1'b0;
-                end
-
-                3'b011: begin
-                    write_reg <= 3'b111;
-                    #1 write_enable <= 1'b1;
-                    #1 ldZ <= 1'b0;
-                end
-
-                3'b100: begin
-                    write_reg <= 3'b110;
-                    #1 write_enable <= 1'b1;
-                    #1 ldZ <= 1'b0;
-                end
-
-                3'b101: begin
-                    write_reg <= 3'b001;
-                    #1 write_enable <= 1'b1;
-                    #1 ldZ <= 1'b0;
-                end 
-
-                3'b110: begin
-                    write_reg <= 3'b011;
-                    #1 write_enable <= 1'b1;
-                    #1 ldZ <= 1'b0;
-                end
-
-                3'b111: begin
-                    write_reg <= 3'b110;
-                    #1 write_enable <= 1'b1;
-                    #1 ldZ <= 1'b0;
-                end
-
-            endcase
+            write_reg <= Rz;
+            #1 write_enable <= 1'b1;
+            #1 ldZ <= 1'b0;
         end
         default: begin
-            read_reg1 = 3'b000;
-            read_reg2 = 3'b000;
-            write_reg = 3'b000;
+            read_reg1 = 4'b0000;
+            read_reg2 = 4'b0000;
+            write_reg = 4'b0000;
             alu_op = 4'b0000;
             write_enable = 1'b0;
         end
