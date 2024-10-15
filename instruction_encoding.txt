@@ -1,4 +1,4 @@
-# Instruction Encoding Scheme (Revised)
+# Instruction Encoding Scheme (Complete)
 
 ## Assumptions
 1. We'll use a fixed 32-bit instruction format for simplicity.
@@ -43,13 +43,33 @@
 ## Opcode Allocation
 - 000000: R-type instructions (use Funct field)
 - 000001-001111: I-type arithmetic/logic instructions
-    -000001: ADDI
-    
-
+  - 000001: ADDI
+  - 000010: SUBI
+  - 000011: ANDI
+  - 000100: ORI
+  - 000101: XORI
+  - 000110: NORI
+  - 000111: NOTI
+  - 001000: SLI
+  - 001001: SRLI
+  - 001010: SRAI
+  - 001011: INCI
+  - 001100: DECI
+  - 001101: SLTI
+  - 001110: SGTI
+  - 001111: LUI
 - 010000-011111: Load/Store instructions
+  - 010000: LD
+  - 010001: ST
 - 100000-101111: Branch instructions
+  - 100000: BR
+  - 100001: BMI
+  - 100010: BPL
+  - 100011: BZ
 - 110000-111110: J-type instructions
-- 111111: Special instructions (HALT, NOP)
+  - 110000: J
+- 111111: Special instructions
+  - 111111: HALT, NOP
 
 ## Function Field (for R-type instructions)
 - 0000000000000: ADD
@@ -69,7 +89,3 @@
 - 0000000001110: HAM
 - 0000000001111: CMOV
 - 0000000010000: MOVE
-
-
-
-
