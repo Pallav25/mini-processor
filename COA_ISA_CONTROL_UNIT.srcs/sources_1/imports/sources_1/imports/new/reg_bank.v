@@ -28,41 +28,11 @@ module register_bank (
     input wire [31:0] write_data,  // Data to write
     input wire write_enable,          // Write enable signal and if disabled then read
     output reg[31:0] read_data1, // Data output from read_reg1
-    output reg[31:0] read_data2,  // Data output from read_reg2
-    output wire [31:0] value1,
-    output wire [31:0] value2,
-    output wire [31:0] value3,
-    output wire [31:0] value4,
-    output wire [31:0] value5,
-    output wire [31:0] value6,
-    output wire [31:0] value7,
-    output wire [31:0] value8,
-    output wire [31:0] value9,
-    output wire [31:0] value10,
-    output wire [31:0] value11,
-    output wire [31:0] value12,
-    output wire [31:0] value13,
-    output wire [31:0] value14,
-    output wire [31:0] value15
+    output reg[31:0] read_data2  // Data output from read_reg2
 );
 
     reg [31:0] registers [15:0]; // 8 registers of 32-bits each
     
-    assign value1=registers[1];
-    assign value2=registers[2];
-    assign value3=registers[3];
-    assign value4=registers[4];
-    assign value5=registers[5];
-    assign value6=registers[6];
-    assign value7=registers[7];
-    assign value8 = registers[8];
-    assign value9 = registers[9];
-    assign value10 = registers[10];
-    assign value11 = registers[11];
-    assign value12 = registers[12];
-    assign value13 = registers[13];
-    assign value14 = registers[14];
-    assign value15 = registers[15];
     
 
     // Initialize R0 to 0

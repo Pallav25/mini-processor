@@ -27,17 +27,10 @@ module top_module (
     input wire [3:0] Ry,
     input wire [3:0] Rz,
     input wire [3:0] op,
-    output wire [31:0]  result,
+    output wire [15:0]  result,
     output [3:0] read_reg1,
     output [3:0] read_reg2, 
-    output [3:0] write_reg,
-    output wire [31:0] reg_value1, 
-    output wire [31:0] reg_value2,
-    output wire [31:0] reg_value3,
-    output wire [31:0] reg_value4,
-    output wire [31:0] reg_value5,
-    output wire [31:0] reg_value6,
-    output wire [31:0] reg_value7
+    output [3:0] write_reg
 );
 
     
@@ -57,15 +50,7 @@ module top_module (
         .write_data(write_data),
         .write_enable(write_enable),
         .read_data1(alu_in1),
-        .read_data2(alu_in2),
-        .value1(reg_value1),
-        .value2(reg_value2),
-        .value3(reg_value3),
-        .value4(reg_value4),
-        .value5(reg_value5),
-        .value6(reg_value6),
-        .value7(reg_value7)
-        
+        .read_data2(alu_in2)        
     );
 
     // Instantiate the Control Path
@@ -73,10 +58,14 @@ module top_module (
         .clk(clk),
         .rst(rst),
         .perform(perform),
-        .control(control),
+        .Rx(Rx),
+        .Ry(Ry),
+        .Rz(Rz),
+        .op(op),
         .read_reg1(read_reg1),
         .read_reg2(read_reg2),
         .write_reg(write_reg),
+        .result(result),
         .alu_op(alu_op),
         .write_enable(write_enable),
         .ldA(ldA),
@@ -113,7 +102,5 @@ module top_module (
         .inputdata(alu_out),
         .data(write_data)
     );
-    
-    assign result=write_data;
 
 endmodule

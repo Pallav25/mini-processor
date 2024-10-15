@@ -32,6 +32,7 @@ module control_path (
     output reg [3:0] write_reg,
     output reg [3:0] alu_op,
     output reg write_enable,
+    output reg [15:0] result,
     output reg ldA,
     output reg ldB,
     output reg ldZ
