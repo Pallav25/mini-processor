@@ -39,6 +39,8 @@ module top_module (
     wire [31:0] reg1, reg2;
     wire [3:0] alu_op;
     wire write_enable;
+    wire ldA, ldB, ldZ;
+    wire ldUp, ldLow;
 
     // Instantiate the Register Bank
     register_bank reg_bank (
@@ -50,7 +52,7 @@ module top_module (
         .write_data(write_data),
         .write_enable(write_enable),
         .read_data1(alu_in1),
-        .read_data2(alu_in2)        
+        .read_data2(alu_in2)
     );
 
     // Instantiate the Control Path
@@ -65,12 +67,13 @@ module top_module (
         .read_reg1(read_reg1),
         .read_reg2(read_reg2),
         .write_reg(write_reg),
-        .result(result),
         .alu_op(alu_op),
         .write_enable(write_enable),
         .ldA(ldA),
         .ldB(ldB),
-        .ldZ(ldZ)
+        .ldZ(ldZ),
+        .ldUp(ldUp),
+        .ldLow(ldLow)
 
     );
 
@@ -101,6 +104,14 @@ module top_module (
         .ld(ldZ),
         .inputdata(alu_out),
         .data(write_data)
+    );
+
+    reg_16bit out_result(
+        .clk(clk),
+        .ldUp(ldUp),
+        .ldLow(ldLow),
+        .inputdata(alu_out),
+        .data(result)
     );
 
 endmodule

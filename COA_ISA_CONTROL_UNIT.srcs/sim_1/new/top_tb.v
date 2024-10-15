@@ -13,10 +13,6 @@ module top_module_tb;
 
     // Outputs
     wire [15:0] result;
-    wire [3:0] read_reg1;
-    wire [3:0] read_reg2;
-    wire [3:0] write_reg;
-
 
     // Instantiate the Unit Under Test (UUT)
     top_module uut (
@@ -27,10 +23,7 @@ module top_module_tb;
         .Ry(Ry),
         .Rz(Rz),
         .op(op),
-        .result(result),
-        .read_reg1(read_reg1),
-        .read_reg2(read_reg2),
-        .write_reg(write_reg)
+        .result(result)
     );
 
     // Clock generation

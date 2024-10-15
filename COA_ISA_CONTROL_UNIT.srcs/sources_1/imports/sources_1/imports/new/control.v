@@ -32,7 +32,8 @@ module control_path (
     output reg [3:0] write_reg,
     output reg [3:0] alu_op,
     output reg write_enable,
-    output reg [15:0] result,
+    output reg ldUp,
+    output reg ldLow,
     output reg ldA,
     output reg ldB,
     output reg ldZ
@@ -89,15 +90,16 @@ end
 always @(state_reg) begin
     case(state_reg)
         2'b00: begin
-            read_reg1 = 4'b0000;
-            read_reg2 = 4'b0000;
-            ldA = 1'b0;
-            ldB = 1'b0;
-            ldZ = 1'b0;
-            write_enable = 1'b0;
+            read_reg1 <= 4'b0000;
+            read_reg2 <= 4'b0000;
+            ldA <= 1'b0;
+            ldB <= 1'b0;
+            ldZ <= 1'b0;
+            write_enable <= 1'b0;
+            ldLow <= 1'b0;
         end
         2'b01: begin
-            read_reg1 <= Rx;
+            read_reg1 <= Rz;
             read_reg2 <= Ry;
             #1 ldA <= 1'b1;
             #1 ldB <= 1'b1;
@@ -106,12 +108,15 @@ always @(state_reg) begin
             alu_op <= op;
             #1 ldZ <= 1'b1;
             #1 ldA <= 1'b0;
-            #1 ldB <= 1'b0;
+            #1 ldB <= 1'b0;            
+            #1 ldUp <= 1'b1;
         end
         2'b11: begin
-            write_reg <= Rz;
+            write_reg <= Rx;
             #1 write_enable <= 1'b1;
             #1 ldZ <= 1'b0;
+            ldUp <= 1'b0;
+            ldLow <= 1'b1;
         end
         default: begin
             read_reg1 = 4'b0000;
