@@ -47,12 +47,12 @@ module control_path (
 
 //state register
 reg [1:0] state_reg, state_next;
-
+//reg newcycle;
 //state transition logic
-always @(state_reg) begin
+always @(state_reg or posedge perform) begin
     case(state_reg)
         2'b00: begin
-            state_next = 2'b00;
+            if(perform) state_next = 2'b01;          
         end
         2'b01: begin
             state_next = 2'b10;
@@ -69,11 +69,10 @@ always @(state_reg) begin
     endcase
 end
 
-always@(posedge perform) begin
-    if(state_reg == 2'b00) begin
-        state_next = 2'b01;
-    end
-end
+//always@(perform) begin
+//    if(perform ==1)newcycle <= 1'b1;
+//    else newcycle<=1'b0;
+//end
 
 //state register update
 always @(posedge clk) begin
